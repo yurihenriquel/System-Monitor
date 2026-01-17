@@ -18,13 +18,12 @@ def save_metrics(metrics):
     cursor = conn.cursor()
 
     cursor.execute("""
-        INSERT INTO metrics (timestamp, cpu_percent, memory_percent)
-        VALUES (?, ?, ?)
-    """, (
-        metrics["timestamp"],
-        metrics["cpu_percent"],
-        metrics["memory_percent"]
-    ))
+    INSERT INTO metrics (cpu_percent, memory_percent)
+    VALUES (?, ?)
+""", (
+    metrics["cpu_percent"],
+    metrics["memory_percent"]
+))
 
     conn.commit()
     conn.close()
