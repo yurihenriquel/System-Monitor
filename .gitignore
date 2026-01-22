@@ -13,3 +13,7 @@ __pycache__/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# SQLite runtime files
+data/*.db
+data/*.db-journal
