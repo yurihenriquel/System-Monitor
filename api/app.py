@@ -1,26 +1,28 @@
 from flask import Flask
-import logging
+from api.routes import api
+from api.config import Config
 
-from api.database import init_db
-from api.routes import register_routes
+app = Flask(__name__)
+app.config.from_object(Config)
 
-
-def create_app():
-    app = Flask(__name__)
-
-    # configurar logger
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
-
-    logger.info("Inicializando banco de dados")
-    init_db()
-
-    register_routes(app)
-
-    return app
+app.register_blueprint(api)
 
 
-app = create_app()
+@app.errorhandler(404)
+def not_found(error):
+    return {
+        "status": "error",
+        "message": "Rota não encontrada"
+    }, 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return {
+        "status": "error",
+        "message": "Erro interno do servidor"
+    }, 500
+
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=app.config["PORT"])

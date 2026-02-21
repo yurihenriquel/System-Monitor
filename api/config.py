@@ -1,3 +1,7 @@
 import os
 
-DB_NAME = os.getenv("DB_NAME", "monitor.db")
+class Config:
+    FLASK_ENV = os.getenv("FLASK_ENV", "production")
+    DEBUG = os.getenv("FLASK_DEBUG", "False") == "True"
+    PORT = int(os.getenv("PORT", 5000))
+    DB_PATH = os.getenv("DB_PATH", "data/monitor.db")

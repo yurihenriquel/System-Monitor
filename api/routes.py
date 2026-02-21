@@ -1,12 +1,10 @@
-from flask import jsonify
+from flask import Blueprint, jsonify
 
+api = Blueprint("api", __name__, url_prefix="/api/v1")
 
-def register_routes(app):
-
-    @app.route("/health")
-    def health():
-        return jsonify({"status": "ok"})
-
-    @app.route("/")
-    def home():
-        return jsonify({"message": "System Monitor API"})
+@api.route("/health", methods=["GET"])
+def health():
+    return jsonify({
+        "ststus": "success",
+        "message": "API funcionando corretamente"
+    }), 200
