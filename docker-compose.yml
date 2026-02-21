@@ -5,5 +5,5 @@ services:
       dockerfile: Dockerfile.api
     ports:
       - "5000:5000"
-    volumes:
-      - ./data:/data
+    environment:
+      DB_NAME: monitor.db

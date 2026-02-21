@@ -1,19 +1,31 @@
+# ----------------------------
 # Ambiente virtual Python
+# ----------------------------
 venv/
 .env/
-
-# Cache Python
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
 
-# VS Code
-.vscode/
+# ----------------------------
+# Banco de dados
+# ----------------------------
+*.db
+data/*.db
 
-# Sistema
+# ----------------------------
+# Logs
+# ----------------------------
+*.log
+
+# ----------------------------
+# Sistema operacional
+# ----------------------------
 .DS_Store
 Thumbs.db
 
-# SQLite runtime files
-data/*.db
-data/*.db-journal
+# ----------------------------
+# Docker
+# ----------------------------
+*.tar
