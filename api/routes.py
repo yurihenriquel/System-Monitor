@@ -3,26 +3,46 @@ from api.database import get_connection
 
 api = Blueprint("api", __name__)
 
-@api.route("/metrics", methods=["POST"])
-def save_metrics():
-    data = request.json
 
-    cpu = data.get("cpu")
-    memory = data.get("memory")
-    disk = data.get("disk")
+@api.route("/metrics", methods=["POST"])
+def create_metrics():
+    data = request.get_json()
 
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("""
+    cursor.execute(
+        """
         INSERT INTO metrics (cpu, memory, disk)
         VALUES (?, ?, ?)
-    """, (cpu, memory, disk))
+        """,
+        (data["cpu"], data["memory"], data ["disk"])
+    )
 
     conn.commit()
     conn.close()
 
-    return jsonify({
-        "status": "success",
-        "message": "Métricas salvas com sucesso"
-    }), 201
+    return jsonify({"message": "Metrics saved"}), 201
+
+@api.route("/metrics", methods=["GET"])
+def get_metrics():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM metrics ORDER BY id DESC")
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    metrics = []
+
+    for row in rows:
+        metrics. append({
+            "id": row["id"],
+            "cpu": row["cpu"],
+            "memory": row["memory"],
+            "disk": row["disk"],
+            "created_at": row["created_at"],            
+        })
+
+    return jsonify(metrics), 200
