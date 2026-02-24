@@ -5,7 +5,14 @@ services:
       dockerfile: Dockerfile.api
     ports:
       - "5000:5000"
-    environment:
-      DB_NAME: monitor.db
+    volumes:
+      - ./data:/app/data
     env_file:
       - .env
+
+  collector:
+    build:
+      context: .
+      dockerfile: Dockerfile.collector
+    depends_on:
+    - api

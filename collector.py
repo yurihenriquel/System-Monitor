@@ -3,7 +3,7 @@ import time
 import requests
 from datetime import datetime
 
-API_URL = "http://api:5000/metrics"
+API_URL = "http://api:5000/api/v1/metrics"
 
 def collect_metrics():
     return {

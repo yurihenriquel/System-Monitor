@@ -1,22 +1,24 @@
 import sqlite3
-from pathlib import Path
-from api.config import DB_NAME
-
-DATA_DIR = Path("/app/data")
-SCHEMA_PATH = Path(__file__).parent / "schema.sql"
-
+from api.config import Config
 
 def get_connection():
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    return sqlite3.connect(DATA_DIR / DB_NAME)
-
+    conn = sqlite3.connect(Config.DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 def init_db():
     conn = get_connection()
     cursor = conn.cursor()
 
-    with open(SCHEMA_PATH, "r") as f:
-        cursor.executescript(f.read())
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS metrics (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cpu REAL,
+            memory REAL,
+            disk REAL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+""")
 
     conn.commit()
     conn.close()
