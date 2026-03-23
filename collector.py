@@ -1,22 +1,20 @@
-import psutil
-import time
 import requests
+import time
+import psutil
 from datetime import datetime
 
 API_URL = "http://api:5000/api/v1/metrics"
 
-def collect_metrics():
-    return {
-        "timestamp": datetime.utcnow().isoformat(),
-        "cpu_percent": psutil.cpu_percent(),
-        "memory_percent": psutil.virtual_memory().percent
+while True:
+    data = {
+        "cpu": psutil.cpu_percent(),
+        "memory": psutil.virtual_memory().percent,
+        "disk": psutil.disk_usage("/").percent,
+        "timestamp": datetime.utcnow().isoformat()
     }
 
-while True:
-    metrics = collect_metrics()
-    print(metrics)
-    try:
-        requests.post(API_URL, json=metrics)
-    except Exception as e:
-        print("Erro ao enviar métricas:", e)
+    print("Enviando:", data)
+
+    requests.post(API_URL, json=data)
+
     time.sleep(5)

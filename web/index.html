@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Monitor</title>
+</head>
+<body>
+    <h1>📊 System Monitor</h1>
+
+    <p>CPU: <span id="cpu"></span>%</p>
+    <p>Memory: <span id="memory"></span>%</p>
+    <p>Disk: <span id="disk"></span>%</p>
+
+    <script>
+        async function loadData() {
+            const res = await fetch("http://localhost:5000/api/v1/metrics/latest")
+            const data = await res.json()
+
+            document.getElementById("cpu").innerText = data.cpu
+            document.getElementById("memory").innerText = data.memory
+            document.getElementById("disk").innerText = data.disk
+        }
+
+        setInterval(loadData, 2000)
+    </script>
+</body>
+</html>
